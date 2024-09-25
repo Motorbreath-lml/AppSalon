@@ -1,0 +1,24 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.formulario{
+  margin-top: 5rem;
+  width: 100%;
+}
+
+.campo{
+  display: flex;
+  margin-bottom: 2rem;
+  align-items: center;
+
+  label{
+    flex: 0 0 10rem;// NoCrecera, NoSeReducira TamañoInicialALoLargo
+  }
+
+  input{
+    flex: 1; //Extiende el input en el contendor
+    border: none;
+    padding: calc(v.$separacion/4);
+    border-radius: 1rem;
+  }
+}
