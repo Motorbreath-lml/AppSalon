@@ -9,8 +9,6 @@ Para validar el usuario, se generada un token que se enviaran via email, con php
 
 El usuario recibira un correo con la liga hacia validar su usuario, esta liga tiene el token en la URL, cuando se dirija adicha liga, eutomaticamente el sistema buscar un usuario por su token si este existe validara al usuario en caso contrario marcara error, si es valido en la base de datos se borrada el token y se indicara en el registro que el uario asido validado.
 
-
-
 ## password_hash() por chatGPT.
 La función `password_hash()` en PHP es utilizada para **encriptar o "hashear" contraseñas** de forma segura, utilizando algoritmos de encriptación que protegen los datos de contraseñas sensibles antes de almacenarlas en una base de datos. En el código que has proporcionado, la función `hashPassword()` está usando este método para **hashear** el valor de la contraseña.
 
