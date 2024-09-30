@@ -56,13 +56,73 @@ class LoginController{
   }
 
   public static function olvide(Router $router){
+    $alertas = [];
+
+    if($_SERVER['REQUEST_METHOD'] === 'POST'){
+      $auth = new Usuario($_POST);
+      $alertas = $auth->validarEmail();
+
+      if(empty($alertas)){
+        $usuario = Usuario::where('email', $auth->email);
+
+        if($usuario && $usuario->confirmado === "1"){
+          // Generar un token
+          $usuario->crearToken();
+          $usuario->guardar();
+
+          // Enviar el email
+          $email = new Email($usuario->nombre, $usuario->email, $usuario->token);
+          $email->enviarInstrucciones();
+
+          // Alerta de exito
+          Usuario::setAlerta('exito', 'Revisa tu email');
+        }else{
+          Usuario::setAlerta('error','El usuario no existe o no esta confirmado');
+        }
+      }
+    }
+
+    $alertas = Usuario::getAlertas();
     $router->render('auth/olvide-password',[
-      
+      'alertas' => $alertas
     ]);
   }
 
-  public static function recuperar(){
-    echo "Desde recuperar";
+  public static function recuperar(Router $router){
+    $alertas = [];
+    $error = false;
+
+    $token = s($_GET['token']);
+
+    // Buscar usuario por su token
+    $usuario = Usuario::where('token', $token);
+    if(empty($usuario)){
+      Usuario::setAlerta('error', 'Token no válido');
+      $error=true;
+    }
+
+    if($_SERVER['REQUEST_METHOD'] === 'POST'){
+      $password = new Usuario($_POST);
+      $alertas = $password->validarPassword();
+    }
+
+    if(empty($alertas)){
+      $usuario->password = null;
+      $usuario->password = $password->password;
+      $usuario->hashPassword();
+      $usuario->token = null;
+      
+      $resultado=$usuario->guardar();
+      if($resultado){
+        header('Location: /');
+      }
+    }
+
+    $alertas = Usuario::getAlertas();
+    $router->render('auth/recuperar-password',[
+      'alertas' => $alertas,
+      'error' => $error
+    ]);
   }
 
   public static function crear(Router $router){

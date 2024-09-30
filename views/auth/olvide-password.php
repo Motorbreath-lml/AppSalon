@@ -3,6 +3,10 @@
   Reestablece tu password escribiendo tu email a continuación
 </p>
 
+<?php
+  include_once __DIR__ . "/../templates/alertas.php";
+?>
+
 <form method="post"  action="/olvide" class="formulario">
   <div class="campo">
     <label for="email">Email</label>
