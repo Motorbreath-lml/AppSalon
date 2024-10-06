@@ -25,8 +25,8 @@ class Email{
     $phpmailer->Host = 'sandbox.smtp.mailtrap.io';
     $phpmailer->SMTPAuth = true;
     $phpmailer->Port = 2525;
-    $phpmailer->Username = 'a9236873bf6a11';
-    $phpmailer->Password = 'dff26ea5ab0f2b';
+    $phpmailer->Username = $_ENV['MT_USERNAME'];  
+    $phpmailer->Password = $_ENV['MT_PASSWORD'];
     $phpmailer->SMTPSecure='tls'; //Mailtrap dice que esta parte es opcional que el cifrado TLS existe en todos los puertos
 
     // Configurar el contenido del mail

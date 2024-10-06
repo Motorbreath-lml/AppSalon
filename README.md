@@ -1,5 +1,17 @@
 # Seccion 46: AppSalon - Proyecto en MVC, PHP 8, MySQL, SASS y Gulp
+## Como iniciar este proyecto
+- En la carpeta RespaldoBaseDeDatos, esta el script sql con el cual crear la base de datos en MySQL
+- Las credenciales de Mailtrap y de la base de datos se colocan en un archivo llamado .env en la carpeta raiz, existe .env.example como archivo de ejemplo.
+- Ejecutar `composer install` para obtener dependencias y crear los namespaces del proyecto
+- Ejecutar `npm install` para obtener dependecias de gulp principalmente
+- `npm run dev` corre el gulpfile para minimisar imagenes, CSS y JS
+- El proyecto se inicia en la carpeta Public
+- El comando `php -S localhost:3000` incia el servidor
+
+## Notas para mi
 Este proyecto lo empece el 21/09/2024, las dependencias del **package.json** estan actualizados hasta este momento, las dependencias se instalan con el comando `npm install`. Para que gulp funcione se ejecuta con el comando `npm run dev` Gulp ayuda a compilar JS y CSS, ademas de comprimir y convertir de formato las imagenes, las dependencias del package.json son solo para desarrollo, no deverian de ir en produccion, ya que no son necesarias.
+
+En el proyecto agregue el uso de [PHP dotenv](https://github.com/vlucas/phpdotenv). para crear variables de entorno y no gaurdar las credenciales de los servicios que uso, hay que tener en cuenta que **php dotenv** se tiene previsto que el archivo desde donde se carga, es desde la carpeta raiz de proyecto, en este caso se carga desde `includes\app` entonces de la ruta me salgo una carpeta, para que este en la raiz y cargue el archivo .env como normalmente se hace. Me base en el siguiente tutotial para usar dotenv [PHP 8.1 Variables de Entorno (archivo .env)](https://www.youtube.com/watch?v=pF_QMLLythg).
 
 Recordar que los cambios de JS, CSS e imagenes se hacen en la carpeta de *src* y se compilan con gulp mediante el gulpfile, las dependencias, el comando en el package.json que es `npm run dev`.
 
@@ -8,6 +20,27 @@ Con el comando `composer init` se incia el proyecto con php lo que interesa aqui
 Para validar el usuario, se generada un token que se enviaran via email, con phpMailer y Mailtrap, en este proyecto se creo un nuevo namespace llamado Classes, su ubicacion es en `.classes` el objetivo de este namespace es generar clases que ayuden con la logica de negocio, hasta el momento seria la Clase Email.php la encargada de mandar los email.
 
 El usuario recibira un correo con la liga hacia validar su usuario, esta liga tiene el token en la URL, cuando se dirija adicha liga, eutomaticamente el sistema buscar un usuario por su token si este existe validara al usuario en caso contrario marcara error, si es valido en la base de datos se borrada el token y se indicara en el registro que el uario asido validado.
+
+Para que un usuario recupere su contraseña, se crea un nuevo token que se manda por email al usuario, este al dar click en el enlace podra cambiar su cintraseña, el controlador tiene validacion del token, validacion de la contraseña. Faltaria agregar que el token tenga una fecha de vencimiento.
+
+Para usar JavaScript en ciertas paginas de la aplicacion se sa codigo de php, por ejemplo en la vista principal de `layout.php` se usa el siguiente codigo al final de la vista, para indicar si hay una variable que contenga el nombre del script.
+```php
+// mas codigo html       
+   <?php
+      echo $script ?? '';
+   ?>
+</body>
+</html>
+```
+Entonce la vista qe hace uso de JavaScript, hace el llamadod e la sigietne forma
+```php
+<?php 
+  $script = "
+    <script src='build/js/app.js'></script>
+  ";
+?>
+```
+Es una etiqueta html, con el nombre del archivo .js que se usara para tal vista, recordar que el archivo .js se escribe en src, se compila con gulp y el resltado se mestra en bild, que es donde estan los archivos compilados y listos para mostrar en publico. La paginacion de cita se hace con puro JavaScript a travez de eventos.
 
 ## password_hash() por chatGPT.
 La función `password_hash()` en PHP es utilizada para **encriptar o "hashear" contraseñas** de forma segura, utilizando algoritmos de encriptación que protegen los datos de contraseñas sensibles antes de almacenarlas en una base de datos. En el código que has proporcionado, la función `hashPassword()` está usando este método para **hashear** el valor de la contraseña.
@@ -149,3 +182,108 @@ Si necesitas una mayor **entropía** o más aleatoriedad (por ejemplo, para mayo
 ### Conclusión:
 
 En tu código, la función `crearToken()` está utilizando `uniqid()` para generar un **token único** basado en la marca de tiempo actual en microsegundos, que luego se asigna a la propiedad `$this->token`. Esto es útil para crear identificadores únicos rápidamente, como tokens de autenticación o IDs únicos para otros propósitos, aunque no es recomendable para casos donde la seguridad es crítica debido a la falta de entropía criptográfica.
+
+## Atributos personalizados en HTML 5 por chatGPT
+En **HTML5**, los atributos personalizados permiten agregar datos adicionales a los elementos HTML, lo que es útil para pasar información a través del DOM sin que sea visible para el usuario. Estos atributos se llaman **atributos de datos (data attributes)** y son utilizados comúnmente junto con **JavaScript** o **CSS** para manipular o presentar datos dinámicos.
+
+### Sintaxis para los atributos de datos
+
+Un atributo personalizado se define agregando un prefijo `data-` seguido de un nombre de tu elección. El valor del atributo puede ser cualquier cadena que desees asociar con ese atributo.
+
+### Ejemplo básico
+
+```html
+<div id="producto" data-id="12345" data-precio="59.99" data-nombre="Laptop">
+    Laptop
+</div>
+```
+
+En este ejemplo, el elemento `div` tiene tres atributos personalizados:
+- `data-id` tiene un valor de `12345`.
+- `data-precio` tiene un valor de `59.99`.
+- `data-nombre` tiene un valor de `Laptop`.
+
+### Acceso a los atributos personalizados con JavaScript
+
+Para interactuar con estos atributos, puedes utilizar **JavaScript**. El acceso a los atributos `data-` se hace a través de la propiedad `dataset` del elemento DOM.
+
+#### Ejemplo de cómo acceder a los atributos:
+
+```html
+<script>
+    const producto = document.getElementById('producto');
+
+    // Acceder a los atributos data
+    console.log(producto.dataset.id); // 12345
+    console.log(producto.dataset.precio); // 59.99
+    console.log(producto.dataset.nombre); // Laptop
+
+    // Modificar un atributo personalizado
+    producto.dataset.precio = "49.99"; // Cambia el precio
+
+    // Ver el nuevo valor
+    console.log(producto.dataset.precio); // 49.99
+</script>
+```
+
+### Acceso a los atributos personalizados con CSS
+
+En **CSS**, los atributos `data-` no pueden ser utilizados directamente para seleccionar elementos, pero pueden ser útiles en casos como los **selectores de atributos** o los **pseudoelementos**.
+
+#### Ejemplo utilizando selectores de atributos en CSS:
+
+```css
+div[data-precio="59.99"] {
+    background-color: yellow;
+}
+```
+
+En este ejemplo, cualquier `div` que tenga un `data-precio="59.99"` tendrá un fondo amarillo.
+
+### Ventajas de usar atributos `data-`
+
+1. **Flexibilidad**: Puedes agregar cualquier tipo de información a los elementos HTML sin romper la estructura del documento.
+2. **Interacción con JavaScript**: Facilita la transferencia de datos personalizados sin necesidad de almacenar estos datos en atributos estándar.
+3. **Mejor rendimiento**: Los atributos personalizados son nativos de HTML5, por lo que el acceso a ellos a través del DOM es eficiente.
+
+### Consideraciones
+
+- Los atributos `data-` solo deben usarse para almacenar datos que son específicos de la página, aplicación o sitio web. No deben usarse para almacenar datos que serán enviados al servidor (usa campos de formulario para eso).
+- Evita usarlos para almacenar datos sensibles o privados, ya que cualquier persona puede inspeccionar el código HTML en su navegador y ver estos valores.
+
+### Ejemplo completo
+
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atributos Personalizados en HTML5</title>
+</head>
+<body>
+
+    <div id="producto" data-id="12345" data-precio="59.99" data-nombre="Laptop">
+        Laptop
+    </div>
+
+    <script>
+        const producto = document.getElementById('producto');
+
+        // Acceder a los atributos data
+        console.log(producto.dataset.id); // 12345
+        console.log(producto.dataset.precio); // 59.99
+        console.log(producto.dataset.nombre); // Laptop
+
+        // Modificar un atributo personalizado
+        producto.dataset.precio = "49.99"; // Cambia el precio
+        console.log(producto.dataset.precio); // 49.99
+    </script>
+
+</body>
+</html>
+```
+
+### Conclusión
+
+Los atributos personalizados son una herramienta poderosa en **HTML5** que permite almacenar datos directamente en los elementos HTML. Estos datos pueden ser fácilmente accedidos o manipulados con **JavaScript** usando la propiedad `dataset`, lo que te ofrece flexibilidad para agregar funcionalidades avanzadas en tus aplicaciones web sin la necesidad de afectar la estructura o semántica del documento HTML.
