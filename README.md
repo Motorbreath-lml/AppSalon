@@ -287,3 +287,450 @@ En este ejemplo, cualquier `div` que tenga un `data-precio="59.99"` tendrá un f
 ### Conclusión
 
 Los atributos personalizados son una herramienta poderosa en **HTML5** que permite almacenar datos directamente en los elementos HTML. Estos datos pueden ser fácilmente accedidos o manipulados con **JavaScript** usando la propiedad `dataset`, lo que te ofrece flexibilidad para agregar funcionalidades avanzadas en tus aplicaciones web sin la necesidad de afectar la estructura o semántica del documento HTML.
+
+## Async y Await en JavaScript
+`async` y `await` son palabras clave en JavaScript que se utilizan para trabajar con funciones asíncronas de manera más clara y legible. Simplifican el uso de promesas y permiten escribir código que parece sincrónico pero que, en realidad, se ejecuta de forma asíncrona.
+
+### `async`
+La palabra clave `async` se coloca antes de una función para indicar que la función es asíncrona y devolverá una promesa de forma automática. Incluso si la función en sí misma no devuelve explícitamente una promesa, `async` asegura que el resultado de la función esté envuelto en una promesa.
+
+```javascript
+async function miFuncionAsincrona() {
+  return "Resultado";
+}
+
+// Llamar a la función asíncrona
+miFuncionAsincrona().then(resultado => console.log(resultado)); // Imprimirá "Resultado"
+```
+
+### `await`
+La palabra clave `await` solo se puede usar dentro de funciones marcadas con `async`. `await` pausa la ejecución de la función asíncrona hasta que la promesa se resuelva (o se rechace) y devuelve el valor de la promesa resuelta. Básicamente, permite “esperar” a que una promesa se complete antes de continuar con el siguiente paso del código.
+
+```javascript
+async function miFuncionAsincrona() {
+  const promesa = new Promise((resolve) => {
+    setTimeout(() => resolve("Resultado después de 2 segundos"), 2000);
+  });
+
+  const resultado = await promesa;
+  console.log(resultado); // Imprimirá "Resultado después de 2 segundos" después de 2 segundos
+}
+
+miFuncionAsincrona();
+```
+
+### Ejemplo práctico con `async` y `await` usando `fetch`
+Un ejemplo común es usar `async` y `await` para obtener datos de una API utilizando `fetch`. En este caso, `await` detiene la ejecución hasta que la promesa `fetch()` se resuelva.
+
+```javascript
+async function obtenerDatos() {
+  try {
+    const respuesta = await fetch("https://api.example.com/datos");
+    
+    // Si la solicitud fue exitosa
+    if (!respuesta.ok) {
+      throw new Error(`Error: ${respuesta.status}`);
+    }
+    
+    const datos = await respuesta.json();
+    console.log(datos);
+  } catch (error) {
+    console.error("Hubo un error al obtener los datos:", error);
+  }
+}
+
+obtenerDatos();
+```
+
+En este ejemplo:
+
+1. `fetch` se usa para hacer una solicitud HTTP a una URL.
+2. `await` se usa para esperar que la solicitud se complete y devuelva una respuesta.
+3. Se verifica si la respuesta fue exitosa. Si no lo fue, se lanza un error.
+4. `await` se usa nuevamente para esperar que el contenido JSON de la respuesta se convierta a un objeto de JavaScript.
+5. Si todo funciona correctamente, se imprime el resultado. En caso de error, se captura y se muestra en la consola.
+
+### Resumen
+- **`async`**: Marca una función como asíncrona, lo que significa que siempre devolverá una promesa.
+- **`await`**: Pausa la ejecución de la función asíncrona hasta que la promesa se resuelva y devuelve el valor resultante.
+
+Estos elementos son útiles para simplificar el manejo de operaciones asíncronas en JavaScript, especialmente cuando hay varias operaciones asíncronas que necesitan ejecutarse en secuencia.
+
+## try y catch en JavaScript
+En JavaScript, `try` y `catch` son bloques utilizados para manejar errores de manera controlada. Permiten ejecutar código que puede lanzar un error y, en caso de que ocurra, manejar el error en lugar de que la aplicación se detenga. Este enfoque de manejo de errores se conoce como "captura de excepciones".
+
+### Sintaxis básica de `try` y `catch`
+```javascript
+try {
+  // Bloque de código que podría lanzar un error
+} catch (error) {
+  // Bloque de código que maneja el error
+}
+```
+
+### Cómo funciona:
+1. **Bloque `try`**: Contiene el código que quieres probar. Si algún error ocurre dentro de este bloque, el flujo de ejecución salta al bloque `catch`.
+   
+2. **Bloque `catch`**: Este bloque se ejecuta solo si ocurre un error en el bloque `try`. Puedes acceder al objeto de error a través de un parámetro, que suele llamarse `error` o cualquier otro nombre que prefieras. El objeto de error proporciona información sobre lo que salió mal.
+
+### Ejemplo de uso básico:
+```javascript
+try {
+  let resultado = 10 / 0; // Esto no causará error, pero supongamos que algo falla aquí
+  console.log(resultado);
+} catch (error) {
+  console.log("Se produjo un error:", error);
+}
+```
+
+### Ejemplo con un error real:
+```javascript
+try {
+  let numero = parseInt("ABC"); // Esto devuelve NaN, pero no es un error real
+  if (isNaN(numero)) {
+    throw new Error("La conversión falló. No es un número.");
+  }
+} catch (error) {
+  console.error("Error:", error.message); // Imprimirá "Error: La conversión falló. No es un número."
+}
+```
+
+### `try`, `catch`, y `finally`
+JavaScript también permite usar un bloque `finally` después de `catch`. El bloque `finally` se ejecutará siempre, independientemente de si se produjo un error o no. Esto es útil para realizar tareas de limpieza o cerrar recursos.
+
+```javascript
+try {
+  let resultado = 10 / 2;
+  console.log(resultado);
+} catch (error) {
+  console.error("Se produjo un error:", error);
+} finally {
+  console.log("El bloque finally siempre se ejecuta.");
+}
+```
+
+En este ejemplo:
+- Si hay un error en el bloque `try`, el bloque `catch` se ejecuta.
+- Independientemente de si ocurre un error o no, el bloque `finally` se ejecutará al final.
+
+### ¿Cuándo usar `try` y `catch`?
+`try` y `catch` son útiles para:
+- Capturar errores inesperados en el código y manejar la situación sin que la aplicación se detenga.
+- Validar y manejar errores en operaciones asíncronas cuando se usan `async` y `await`.
+- Realizar limpieza de recursos (por ejemplo, cerrar conexiones a bases de datos o archivos abiertos) utilizando el bloque `finally`.
+
+### Ejemplo usando `try-catch` con `async` y `await`
+```javascript
+async function obtenerDatos() {
+  try {
+    const respuesta = await fetch("https://api.example.com/data");
+    const datos = await respuesta.json();
+    console.log(datos);
+  } catch (error) {
+    console.error("Error al obtener datos:", error);
+  }
+}
+
+obtenerDatos();
+```
+
+Este enfoque te permite manejar errores de forma más estructurada, mejorando la robustez y legibilidad del código, y asegurando que los errores no causen fallos inesperados en la aplicación.
+
+## Referencia a funciones en JS
+```JS
+servicioDiv.onclick = seleccionarServicio;// Referencia a la funcion, se ejecuta cuando el evento del click ocurra
+function seleccionarServicio(){
+  console.log('desde seleccionar servicio');
+}
+```
+En tu código, estás asignando la función `seleccionarServicio` al evento `onclick` de `servicioDiv` sin los paréntesis `()`. Esto se debe a cómo funcionan las referencias a funciones en JavaScript. Vamos a desglosar por qué se hace de esta manera y qué sucedería si usaras paréntesis.
+
+### Llamar una función vs. Referenciar una función
+
+1. **Referenciar la función sin paréntesis (`seleccionarServicio`)**: 
+   - Al escribir `servicioDiv.onclick = seleccionarServicio;`, le estás asignando **la referencia de la función** `seleccionarServicio` al evento `onclick`. Esto significa que la función `seleccionarServicio` se llamará automáticamente **cuando el evento `onclick` se dispare**, es decir, cuando hagas clic en `servicioDiv`.
+   - La función no se ejecuta en el momento de asignación; solo se ejecuta cuando ocurre el evento.
+
+   ```javascript
+   servicioDiv.onclick = seleccionarServicio; // Solo asigna la referencia
+   ```
+
+2. **Llamar a la función con paréntesis (`seleccionarServicio()`)**: 
+   - Si en cambio escribieras `servicioDiv.onclick = seleccionarServicio();`, la función `seleccionarServicio` se ejecutaría **inmediatamente** cuando se evalúa esta línea de código, no cuando el usuario hace clic en `servicioDiv`.
+   - Lo que realmente sucede es que `seleccionarServicio()` se evalúa y ejecuta de inmediato, y su valor de retorno se asigna a `servicioDiv.onclick`. Si `seleccionarServicio` no tiene un valor de retorno (o devuelve `undefined`), entonces `servicioDiv.onclick` no hará nada útil cuando se haga clic.
+
+   ```javascript
+   servicioDiv.onclick = seleccionarServicio(); // Ejecuta la función inmediatamente
+   ```
+
+### Ejemplo para aclarar
+Supongamos que tienes lo siguiente:
+
+```javascript
+function seleccionarServicio() {
+  console.log('Función llamada');
+  return "Esto es un retorno";
+}
+
+servicioDiv.onclick = seleccionarServicio(); // Ejecuta inmediatamente y asigna el retorno
+```
+
+Este código ejecutará `seleccionarServicio` de inmediato y asignará el valor `"Esto es un retorno"` al evento `onclick`. Sin embargo, ya no se llamará `seleccionarServicio` cuando hagas clic en `servicioDiv` porque el evento ya no tiene una función asignada, sino el valor de retorno de `seleccionarServicio`.
+
+Para que la función se ejecute solo cuando el evento ocurre (es decir, el clic), es necesario pasar **la referencia a la función** (sin los paréntesis) al asignarla al evento.
+
+### Resumen
+- **Sin paréntesis** (`servicioDiv.onclick = seleccionarServicio;`) es una referencia a la función y se ejecuta solo cuando el evento ocurre.
+- **Con paréntesis** (`servicioDiv.onclick = seleccionarServicio();`) ejecuta la función de inmediato y asigna su retorno al evento, lo cual generalmente no es lo que se quiere al asignar eventos.
+
+Por lo tanto, la forma correcta para que la función se ejecute cuando el usuario haga clic es **sin paréntesis**, ya que así el evento tiene la referencia de la función que ejecutará solo cuando sea necesario.
+
+## Funcion some en JS
+En JavaScript, la función `some()` es un método de los arrays que se utiliza para verificar si **al menos un elemento del array cumple con una condición específica**. Este método devuelve `true` si encuentra un elemento que cumple la condición, y `false` en caso contrario. Es útil cuando solo necesitas saber si existe al menos un elemento que cumpla el criterio, sin tener que verificar el resto.
+
+### Sintaxis
+```javascript
+array.some(callback(elemento, índice, array), thisArg);
+```
+
+- **`callback`**: Función que se ejecuta sobre cada elemento del array. Recibe tres parámetros:
+  - **`elemento`**: El elemento actual del array que se está evaluando.
+  - **`índice`** (opcional): El índice del elemento actual.
+  - **`array`** (opcional): El array completo.
+- **`thisArg`** (opcional): Un valor que se usará como `this` dentro del callback.
+
+### Ejemplo con un Array de Objetos
+Supongamos que tienes un arreglo de objetos que representan productos, y quieres verificar si al menos uno de ellos es una laptop.
+
+```javascript
+const productos = [
+  { nombre: "Teléfono", tipo: "Electrónica" },
+  { nombre: "Laptop", tipo: "Electrónica" },
+  { nombre: "Silla", tipo: "Muebles" }
+];
+
+const existeLaptop = productos.some(producto => producto.nombre === "Laptop");
+
+console.log(existeLaptop); // Imprimirá true, ya que uno de los elementos es una laptop.
+```
+
+En este ejemplo:
+- `some()` recorre cada objeto en el array `productos`.
+- La función de callback verifica si el valor de `nombre` del objeto es `"Laptop"`.
+- Dado que al menos un elemento cumple esta condición, `some()` devuelve `true`.
+
+### Ejemplo con Condiciones más Complejas
+También puedes usar `some()` para verificar otras condiciones. Por ejemplo, si tienes un arreglo de objetos que representan personas, podrías verificar si alguna tiene más de 18 años.
+
+```javascript
+const personas = [
+  { nombre: "Ana", edad: 16 },
+  { nombre: "Luis", edad: 20 },
+  { nombre: "Juan", edad: 15 }
+];
+
+const hayMayorDeEdad = personas.some(persona => persona.edad > 18);
+
+console.log(hayMayorDeEdad); // Imprimirá true, porque "Luis" tiene más de 18 años.
+```
+
+En este caso:
+- La función de callback verifica si `edad` es mayor que 18.
+- `some()` devuelve `true` si al menos una persona cumple esta condición.
+
+### Notas Importantes
+- **Resultado**: `some()` detiene la iteración en cuanto encuentra el primer elemento que cumple la condición. Esto hace que sea eficiente, ya que no recorre todo el array si no es necesario.
+- **Valor de retorno**: `some()` siempre devuelve un valor booleano: `true` si se encuentra al menos un elemento que cumple con la condición, y `false` en caso contrario.
+- **Uso común**: `some()` es muy útil para comprobar la existencia de un elemento con una característica particular dentro de un array sin modificar el array.
+
+Es una función muy práctica para realizar verificaciones rápidas en arreglos, especialmente cuando solo se necesita confirmar la existencia de un elemento que cumpla cierta condición.
+
+## Funcion date de PHP
+La función `date()` en PHP se usa para dar formato a una fecha y hora. En tu ejemplo, el código está obteniendo la fecha del **día siguiente** y la está formateando en el formato **"YYYY-MM-DD"**.
+
+### Explicación del código
+```php
+date('Y-m-d', strtotime('+1 day'));
+```
+
+Aquí está el desglose de cada parte:
+
+1. **`strtotime('+1 day')`**: 
+   - La función `strtotime()` convierte una cadena de texto en una marca de tiempo (timestamp).
+   - El argumento `'+1 day'` le dice a `strtotime()` que obtenga la marca de tiempo correspondiente a **mañana** (un día después de hoy).
+   - Es útil para manipular fechas de manera relativa, como añadir o restar días, semanas, etc.
+
+2. **`date('Y-m-d', ...)`**:
+   - La función `date()` toma dos argumentos: un **formato de fecha** y un **timestamp**.
+   - El formato `'Y-m-d'` indica que la fecha se mostrará en **Año-Mes-Día** (ejemplo: `2023-10-06`).
+   - Como segundo argumento, recibe el timestamp calculado con `strtotime('+1 day')`.
+   
+   En este caso, `date()` dará como salida la fecha de mañana en formato `YYYY-MM-DD`.
+
+### Ejemplo de salida
+Si hoy fuera `2023-10-05`, el código:
+```php
+echo date('Y-m-d', strtotime('+1 day'));
+```
+imprimiría:
+```
+2023-10-06
+```
+
+### Otros ejemplos con `strtotime()`
+- `strtotime('+2 weeks')`: Obtiene la fecha dentro de dos semanas.
+- `strtotime('-1 month')`: Obtiene la fecha del mes anterior.
+- `strtotime('+3 days 2 hours')`: Obtiene la fecha y hora de **tres días y dos horas en el futuro**.
+
+### Resumen
+El código `date('Y-m-d', strtotime('+1 day'))` te permite obtener la fecha de **mañana** en formato `YYYY-MM-DD`. Es una forma sencilla y eficiente de trabajar con fechas futuras o pasadas usando PHP.
+
+## Funcion Date en JS
+En JavaScript, el objeto `Date` se utiliza para trabajar con fechas y horas. Ofrece una gran variedad de métodos que te permiten crear, manipular y formatear fechas de manera sencilla. Este objeto puede representar cualquier fecha y hora desde el 1 de enero de 1970 hasta alrededor del año 275,000, lo que lo hace muy flexible para trabajar en múltiples aplicaciones.
+
+### Crear un Objeto `Date`
+Hay varias formas de crear un nuevo objeto `Date`:
+
+1. **Fecha y hora actuales:**
+   ```javascript
+   const fechaActual = new Date();
+   console.log(fechaActual); // Muestra la fecha y hora actual
+   ```
+
+2. **Fecha específica:**
+   Puedes especificar una fecha en el formato `"YYYY-MM-DD"`.
+   ```javascript
+   const fecha = new Date("2024-10-06");
+   console.log(fecha); // Muestra la fecha 6 de octubre de 2024
+   ```
+
+3. **Fecha y hora específicas:**
+   Puedes pasar los parámetros de año, mes (0-11), día, hora, minutos, segundos y milisegundos.
+   ```javascript
+   const fechaCompleta = new Date(2024, 9, 6, 15, 30, 0); // Mes 9 es octubre
+   console.log(fechaCompleta); // Muestra 6 de octubre de 2024 a las 15:30:00
+   ```
+
+4. **Usando milisegundos desde 1970 (timestamp):**
+   ```javascript
+   const fechaPorTimestamp = new Date(0); // Fecha base (1 de enero de 1970)
+   console.log(fechaPorTimestamp);
+   ```
+
+### Métodos Principales del Objeto `Date`
+El objeto `Date` ofrece varios métodos para trabajar con fechas y horas. Aquí tienes algunos de los métodos más comunes:
+
+#### Obtener Información de la Fecha y Hora
+- **`getFullYear()`**: Devuelve el año de la fecha.
+  ```javascript
+  const anio = fechaActual.getFullYear();
+  ```
+
+- **`getMonth()`**: Devuelve el mes de la fecha (0 para enero, 11 para diciembre).
+  ```javascript
+  const mes = fechaActual.getMonth();
+  ```
+
+- **`getDate()`**: Devuelve el día del mes (1-31).
+  ```javascript
+  const dia = fechaActual.getDate();
+  ```
+
+- **`getDay()`**: Devuelve el día de la semana (0 para domingo, 6 para sábado).
+  ```javascript
+  const diaSemana = fechaActual.getDay();
+  ```
+
+- **`getHours()`**: Devuelve la hora (0-23).
+  ```javascript
+  const horas = fechaActual.getHours();
+  ```
+
+- **`getMinutes()`**: Devuelve los minutos (0-59).
+  ```javascript
+  const minutos = fechaActual.getMinutes();
+  ```
+
+- **`getSeconds()`**: Devuelve los segundos (0-59).
+  ```javascript
+  const segundos = fechaActual.getSeconds();
+  ```
+
+- **`getMilliseconds()`**: Devuelve los milisegundos (0-999).
+  ```javascript
+  const milisegundos = fechaActual.getMilliseconds();
+  ```
+
+#### Modificar Información de la Fecha y Hora
+Los métodos `set` permiten ajustar las diferentes partes de la fecha y hora.
+
+- **`setFullYear(anio)`**: Establece el año de la fecha.
+  ```javascript
+  fechaActual.setFullYear(2025);
+  ```
+
+- **`setMonth(mes)`**: Establece el mes de la fecha.
+  ```javascript
+  fechaActual.setMonth(0); // Enero
+  ```
+
+- **`setDate(dia)`**: Establece el día del mes.
+  ```javascript
+  fechaActual.setDate(15);
+  ```
+
+- **`setHours(hora)`**, **`setMinutes(minutos)`**, **`setSeconds(segundos)`**, **`setMilliseconds(ms)`**: Ajustan las horas, minutos, segundos y milisegundos de la fecha.
+
+### Métodos para Formatear Fechas
+- **`toISOString()`**: Convierte la fecha a una cadena en formato ISO (UTC).
+  ```javascript
+  const fechaISO = fechaActual.toISOString();
+  ```
+
+- **`toDateString()`**: Convierte la fecha a una cadena legible.
+  ```javascript
+  const fechaLegible = fechaActual.toDateString();
+  ```
+
+- **`toTimeString()`**: Convierte la hora a una cadena legible.
+  ```javascript
+  const horaLegible = fechaActual.toTimeString();
+  ```
+
+- **`toLocaleDateString()`**: Convierte la fecha a una cadena legible según la configuración regional.
+  ```javascript
+  const fechaLocal = fechaActual.toLocaleDateString();
+  ```
+
+- **`toLocaleTimeString()`**: Convierte la hora a una cadena legible según la configuración regional.
+  ```javascript
+  const horaLocal = fechaActual.toLocaleTimeString();
+  ```
+
+### Operaciones con Fechas
+Puedes realizar operaciones como sumar días, restar días, o comparar fechas.
+
+```javascript
+// Sumar un día
+const fecha = new Date();
+fecha.setDate(fecha.getDate() + 1); // Suma un día
+
+// Comparar fechas
+const hoy = new Date();
+const otraFecha = new Date("2024-12-25");
+
+if (hoy > otraFecha) {
+  console.log("Hoy es después de 25 de diciembre de 2024");
+} else {
+  console.log("Hoy es antes o el mismo día");
+}
+```
+
+### Resumen
+- El objeto `Date` es fundamental para trabajar con fechas y horas en JavaScript.
+- Permite obtener y modificar partes individuales de la fecha y la hora.
+- Los métodos de formateo te ayudan a convertir fechas en cadenas legibles y específicas para diferentes zonas horarias y configuraciones regionales.
+  
+El objeto `Date` en JavaScript es muy útil para cualquier aplicación que necesite manejar fechas y horas, desde aplicaciones de calendario hasta registro de eventos y tiempo en aplicaciones web.
+
+### Date.UTC()
