@@ -42,6 +42,10 @@ Entonce la vista qe hace uso de JavaScript, hace el llamadod e la sigietne forma
 ```
 Es una etiqueta html, con el nombre del archivo .js que se usara para tal vista, recordar que el archivo .js se escribe en src, se compila con gulp y el resltado se mestra en bild, que es donde estan los archivos compilados y listos para mostrar en publico. La paginacion de cita se hace con puro JavaScript a travez de eventos.
 
+Para probar la rutas de la API se uso *Postman*, tambien se puede usar una extension llamada *Thunder Client*, Otra forma de checar la comunicacion con la api es en las herramientas de desarrollador de Chrome, en network, en Fetch/XHR podemos revisar las peticiones que hace el codigo de JavaScript que creamos y su respuesta. Por ejemplo podemos interrumpir la secuencia del codigo hasta doncre creamos que hay un error con la siguiente linea `return json_encode(['query' => $query])` Por ejemplo antes de realizar una consulta, se puede mandar como respuesta de la API la consulta que se va arealizar y debuggearla.
+
+Se utiliza [SweetAlert2](https://sweetalert2.github.io/) para mostrar notificaciones al usuario, se utilizo con el CDN.
+
 ## password_hash() por chatGPT.
 La función `password_hash()` en PHP es utilizada para **encriptar o "hashear" contraseñas** de forma segura, utilizando algoritmos de encriptación que protegen los datos de contraseñas sensibles antes de almacenarlas en una base de datos. En el código que has proporcionado, la función `hashPassword()` está usando este método para **hashear** el valor de la contraseña.
 
@@ -734,3 +738,41 @@ if (hoy > otraFecha) {
 El objeto `Date` en JavaScript es muy útil para cualquier aplicación que necesite manejar fechas y horas, desde aplicaciones de calendario hasta registro de eventos y tiempo en aplicaciones web.
 
 ### Date.UTC()
+El método `Date.UTC()` en JavaScript se utiliza para crear una fecha en el formato UTC (Tiempo Universal Coordinado), devolviendo el **número de milisegundos transcurridos desde el 1 de enero de 1970 a las 00:00:00 UTC hasta la fecha especificada**. Este valor es útil para trabajar con fechas en un formato estándar que no depende de la zona horaria del usuario.
+
+### Sintaxis
+```javascript
+Date.UTC(año, mes, día, hora, minutos, segundos, milisegundos);
+```
+
+- **año** (obligatorio): El año de la fecha.
+- **mes** (obligatorio): El mes de la fecha, con valores de `0` (enero) a `11` (diciembre).
+- **día** (opcional): El día del mes (1-31). Si no se proporciona, se asume `1`.
+- **hora** (opcional): La hora (0-23). Si no se proporciona, se asume `0`.
+- **minutos** (opcional): Los minutos (0-59). Si no se proporciona, se asume `0`.
+- **segundos** (opcional): Los segundos (0-59). Si no se proporciona, se asume `0`.
+- **milisegundos** (opcional): Los milisegundos (0-999). Si no se proporciona, se asume `0`.
+
+### Ejemplo de Uso
+Supongamos que quieres crear una fecha específica en UTC y obtener el valor de milisegundos transcurridos desde 1970.
+
+```javascript
+const fechaUTC = Date.UTC(2024, 9, 6, 12, 0, 0); // Octubre es mes 9
+console.log(fechaUTC); // Devuelve el número de milisegundos transcurridos
+```
+
+### Crear un Objeto `Date` en UTC
+Puedes utilizar el valor devuelto por `Date.UTC()` para crear un nuevo objeto `Date` que represente la fecha y hora en UTC:
+
+```javascript
+const fecha = new Date(Date.UTC(2024, 9, 6, 12, 0, 0));
+console.log(fecha); // Muestra una fecha en UTC
+```
+
+### Usos Comunes
+1. **Manejo de Fechas en UTC**: Es útil cuando necesitas manipular fechas y horas en un formato estándar UTC en lugar de la zona horaria local del usuario.
+2. **Comparación de Fechas**: Puedes comparar fechas independientemente de las zonas horarias.
+3. **Cálculos de Diferencias de Tiempo**: Al trabajar con los milisegundos de `Date.UTC()`, puedes realizar cálculos precisos de diferencias de tiempo entre fechas.
+
+### Resumen
+`Date.UTC()` es un método útil para trabajar con fechas y horas en formato UTC, devolviendo un valor en milisegundos que puedes utilizar para manipular y comparar fechas de manera independiente a la zona horaria local.

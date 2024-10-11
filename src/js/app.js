@@ -3,6 +3,7 @@ const pasoInicial = 1;
 const pasoFinal = 3;
 
 const cita = {
+  id:'',
   nombre: '',
   fecha: '',
   hora: '',
@@ -22,6 +23,8 @@ function iniciarApp() {
   paginaAnterior();
 
   consultarAPI(); // Consulta la API en el backend de PHP
+
+  idCliente();
 
   nombreCliente(); // Añade el nombre del cliente al objeto de cita
   seleccionarFecha(); // Añade la fecha de la cita en el objeto
@@ -166,7 +169,11 @@ function seleccionarServicio(servicio) {
     divServicio.classList.add('seleccionado');
   }
 
-  console.log(cita);
+  //console.log(cita);
+}
+
+function idCliente() {
+  cita.id = document.querySelector('#id').value;
 }
 
 function nombreCliente() {
@@ -197,7 +204,7 @@ function seleccionarHora() {
       mostrarAlerta('Hora No Válida', 'error', '.formulario');
     } else {
       cita.hora = e.target.value;
-      console.log(cita);
+      //console.log(cita);
     }
   });
 }
@@ -305,6 +312,52 @@ function mostrarResumen() {
   resumen.appendChild(botonReservar);
 }
 
-function reservarCita(){
-  console.log('Reservando cita...');
+async function reservarCita(){
+  const {nombre, fecha, hora, servicios, id} =cita;
+  const idServicio = servicios.map(servicio => servicio.id);
+
+  const datos = new FormData();
+  //datos.append('nombre', nombre);
+  datos.append('fecha', fecha);
+  datos.append('hora', hora);
+  datos.append('usuarioId', id);
+  datos.append('servicios', idServicio);
+
+  // Petición hacia la api
+  const url ='http://localhost:3000/api/citas';
+  
+  // Por si la peticion falla
+  try {
+    const respuesta = await fetch(url,{
+      method:'POST',
+      body: datos
+    });
+
+    const resultado = await respuesta.json();
+    console.log(resultado);
+    
+    if(resultado.resultado){ // Si la respuesta es afirmativa
+      Swal.fire({ // Se crea una alerta con sweet alert
+        title: "Cita Creada",
+        text: "Tu cita fue creada correctamente",
+        icon: "success",
+        confirmButtonText: "OK"
+      }).then(()=>{ // Cuando la cita fue creada se recarga la pagina
+        setTimeout(()=>{
+          window.location.reload();
+        }, 3000);
+      });
+    }
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "Hubo un error al guardar la cita",      
+    });
+  }
+
+  
+
+  //Una forma de debuguear lo que se manda
+  //console.log([...datos]);
 }

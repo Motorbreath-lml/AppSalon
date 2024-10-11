@@ -94,10 +94,10 @@ class ActiveRecord {
         $resultado = '';
         if(!is_null($this->id)) {
             // actualizar
-            $resultado = $this->actualizar();
+            $resultado = $this->actualizar();            
         } else {
             // Creando un nuevo registro
-            $resultado = $this->crear();
+            $resultado = $this->crear();            
         }
         return $resultado;
     }
@@ -140,9 +140,9 @@ class ActiveRecord {
         $query .= join(', ', array_keys($atributos));
         $query .= " ) VALUES (' "; 
         $query .= join("', '", array_values($atributos));
-        $query .= " ') ";
-        // Resultado de la consulta
-        $resultado = self::$db->query($query);
+        $query .= " ') ";             
+        
+        $resultado = self::$db->query($query);        
         return [
            'resultado' =>  $resultado,
            'id' => self::$db->insert_id

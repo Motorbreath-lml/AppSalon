@@ -52,7 +52,12 @@ class LoginController{
   }
 
   public static function logout(){
-    echo "Desde logout";
+    // session_start();
+
+    $_SESSION=[]; // limpiar las variables de sesion
+
+    // Redirigir al usuario a la carpeta raiz
+    header('Location: /');
   }
 
   public static function olvide(Router $router){
