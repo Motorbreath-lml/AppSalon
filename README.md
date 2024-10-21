@@ -776,3 +776,123 @@ console.log(fecha); // Muestra una fecha en UTC
 
 ### Resumen
 `Date.UTC()` es un método útil para trabajar con fechas y horas en formato UTC, devolviendo un valor en milisegundos que puedes utilizar para manipular y comparar fechas de manera independiente a la zona horaria local.
+
+## Joins en SQL
+En SQL, y en particular en MySQL, los **joins** (o uniones) se utilizan para combinar datos de dos o más tablas basadas en una condición de relación entre ellas. El tipo de join determina cómo se combinan los datos entre las tablas. Vamos a hablar del **LEFT OUTER JOIN** y de otros tipos de joins en MySQL.
+
+### 1. **LEFT OUTER JOIN**
+El **LEFT JOIN** (también conocido como **LEFT OUTER JOIN**) selecciona todos los registros de la **tabla izquierda** (la primera tabla mencionada), y los registros coincidentes de la **tabla derecha**. Si no hay coincidencias en la tabla derecha, el resultado será `NULL` para todas las columnas de la tabla derecha.
+
+#### Sintaxis:
+```sql
+SELECT column_names
+FROM table1
+LEFT JOIN table2 ON table1.column_name = table2.column_name;
+```
+
+#### Ejemplo:
+Supongamos que tenemos dos tablas:
+
+- **Customers**
+  | id | name   |
+  |----|--------|
+  | 1  | Alice  |
+  | 2  | Bob    |
+  | 3  | Charlie|
+
+- **Orders**
+  | id | customer_id | amount |
+  |----|-------------|--------|
+  | 1  | 1           | 100    |
+  | 2  | 1           | 200    |
+  | 3  | 2           | 300    |
+
+Si ejecutamos el siguiente `LEFT JOIN`:
+```sql
+SELECT Customers.name, Orders.amount
+FROM Customers
+LEFT JOIN Orders ON Customers.id = Orders.customer_id;
+```
+
+**Resultado**:
+| name    | amount |
+|---------|--------|
+| Alice   | 100    |
+| Alice   | 200    |
+| Bob     | 300    |
+| Charlie | NULL   |
+
+Como puedes ver, el `LEFT JOIN` ha tomado todos los registros de la tabla **Customers** y los ha combinado con los registros de **Orders**. Como **Charlie** no tiene ningún pedido, su columna `amount` resulta en `NULL`.
+
+### 2. **RIGHT OUTER JOIN**
+El **RIGHT JOIN** (o **RIGHT OUTER JOIN**) selecciona todos los registros de la **tabla derecha** (la segunda tabla mencionada) y los registros coincidentes de la **tabla izquierda**. Si no hay coincidencias en la tabla izquierda, el resultado será `NULL` para todas las columnas de la tabla izquierda.
+
+#### Sintaxis:
+```sql
+SELECT column_names
+FROM table1
+RIGHT JOIN table2 ON table1.column_name = table2.column_name;
+```
+
+### 3. **INNER JOIN**
+El **INNER JOIN** selecciona solo los registros que tienen coincidencias en ambas tablas. Si no hay coincidencia, esos registros no se incluirán en el resultado.
+
+#### Sintaxis:
+```sql
+SELECT column_names
+FROM table1
+INNER JOIN table2 ON table1.column_name = table2.column_name;
+```
+
+#### Ejemplo:
+Si usamos `INNER JOIN` con las tablas anteriores:
+```sql
+SELECT Customers.name, Orders.amount
+FROM Customers
+INNER JOIN Orders ON Customers.id = Orders.customer_id;
+```
+
+**Resultado**:
+| name  | amount |
+|-------|--------|
+| Alice | 100    |
+| Alice | 200    |
+| Bob   | 300    |
+
+En este caso, **Charlie** no aparece porque no tiene pedidos (no hay coincidencia).
+
+### 4. **FULL OUTER JOIN**
+El **FULL OUTER JOIN** (o simplemente **FULL JOIN**) selecciona todos los registros de ambas tablas, combinando donde hay coincidencias y poniendo `NULL` donde no hay coincidencias en cualquiera de las dos tablas. Este tipo de join no es compatible de forma nativa en MySQL, pero se puede emular utilizando `LEFT JOIN` y `RIGHT JOIN` con una unión de `UNION`.
+
+#### Ejemplo de Emulación:
+```sql
+SELECT Customers.name, Orders.amount
+FROM Customers
+LEFT JOIN Orders ON Customers.id = Orders.customer_id
+UNION
+SELECT Customers.name, Orders.amount
+FROM Customers
+RIGHT JOIN Orders ON Customers.id = Orders.customer_id;
+```
+
+### 5. **CROSS JOIN**
+El **CROSS JOIN** devuelve el producto cartesiano de ambas tablas, lo que significa que combina cada fila de la primera tabla con cada fila de la segunda tabla. No se usa normalmente para la combinación de datos relacionales, pero puede ser útil para generar combinaciones.
+
+#### Sintaxis:
+```sql
+SELECT column_names
+FROM table1
+CROSS JOIN table2;
+```
+
+#### Ejemplo:
+Si tenemos dos tablas pequeñas, **A** con dos filas y **B** con tres filas, un `CROSS JOIN` dará como resultado **6 filas** (2 x 3).
+
+### Resumen de Tipos de JOIN:
+- **LEFT JOIN**: Todos los registros de la tabla izquierda y coincidencias de la derecha (o `NULL` si no hay coincidencia).
+- **RIGHT JOIN**: Todos los registros de la tabla derecha y coincidencias de la izquierda (o `NULL` si no hay coincidencia).
+- **INNER JOIN**: Solo registros coincidentes de ambas tablas.
+- **FULL OUTER JOIN**: Todos los registros de ambas tablas, con `NULL` donde no hay coincidencias. (No nativo en MySQL, se emula con `UNION`).
+- **CROSS JOIN**: Producto cartesiano de ambas tablas (todas las combinaciones posibles de filas).
+
+Cada tipo de join se usa dependiendo de cómo deseas combinar los datos entre tus tablas y los resultados específicos que estás buscando.

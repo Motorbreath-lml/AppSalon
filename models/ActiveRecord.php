@@ -123,6 +123,12 @@ class ActiveRecord {
         return array_shift( $resultado ) ;
     }
 
+    // Ejecuta una senetencia SQL (Utilizar cuando los métodos de modelo no son suficientes)
+    public static function SQL($query) {
+        $resultado = self::consultarSQL($query);
+        return $resultado;
+    }
+
     // Obtener Registros con cierta cantidad
     public static function get($limite) {
         $query = "SELECT * FROM " . static::$tabla . " LIMIT {$limite}";
