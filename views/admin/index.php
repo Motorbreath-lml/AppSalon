@@ -49,6 +49,10 @@ if (count($citas) === 0) {
         <p class="servicio">
           No hay servicios
         </p>
+        <form action="/api/eliminar" method="post">
+          <input type="hidden" name="id" value="<?= $cita->id ?? '' ?>">
+          <input type="submit" value="Eliminar Cita" class="boton-eliminar">
+        </form>
       <?php
       else:
       ?>

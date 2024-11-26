@@ -43,7 +43,7 @@ class Email{
     $contenido .= '<p> Tienes un nuevo mensaje. </p>';
     $contenido .= "<p> Hola <strong>" . $this->nombre . "</strong></p>";
     $contenido .= "<p> Has creado tu cuenta en App Salón solo debes confirmar presionando el siguiente enlace.  </p>";
-    $contenido .= "<p> <a href='http://localhost:3000/confirmar-cuenta?token=$this->token'>Confirmar cuenta</a> </p>";
+    $contenido .= "<p> <a href='" . $_ENV['APP_URL'] . "/confirmar-cuenta?token=$this->token'>Confirmar cuenta</a> </p>";
     $contenido .= "<p> Si tu solicitaste este cambio, puedes ignorar el mensaje </p>";
     $contenido.= "</html>";
     $phpmailer->Body=$contenido;
@@ -65,8 +65,8 @@ class Email{
     $phpmailer->Host = 'sandbox.smtp.mailtrap.io';
     $phpmailer->SMTPAuth = true;
     $phpmailer->Port = 2525;
-    $phpmailer->Username = 'a9236873bf6a11';
-    $phpmailer->Password = 'dff26ea5ab0f2b';
+    $phpmailer->Username = $_ENV['MT_USERNAME'];
+    $phpmailer->Password = $_ENV['MT_PASSWORD'];
     $phpmailer->SMTPSecure='tls'; //Mailtrap dice que esta parte es opcional que el cifrado TLS existe en todos los puertos
 
     // Configurar el contenido del mail
@@ -83,7 +83,7 @@ class Email{
     $contenido .= '<p> Tienes un nuevo mensaje. </p>';
     $contenido .= "<p> Hola <strong>" . $this->nombre . "</strong></p>";
     $contenido .= "<p> Has solicitado reestablecer tu password, sigue el siguiente enlace para hacerlo. </p>";
-    $contenido .= "<p> <a href='http://localhost:3000/recuperar?token=$this->token'>Reestablecer password</a> </p>";
+    $contenido .= "<p> <a href='" . $_ENV['APP_URL'] . "/recuperar?token=$this->token'>Reestablecer password</a> </p>";
     $contenido .= "<p> Si tu solicitaste este cambio, puedes ignorar el mensaje </p>";
     $contenido.= "</html>";
     $phpmailer->Body=$contenido;

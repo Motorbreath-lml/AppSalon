@@ -28,11 +28,11 @@ CREATE TABLE `citas` (
   `id` int NOT NULL AUTO_INCREMENT,
   `fecha` date DEFAULT NULL,
   `hora` time DEFAULT NULL,
-  `usuariosId` int NOT NULL,
-  PRIMARY KEY (`id`,`usuariosId`),
-  KEY `fk_Citas_usuarios_idx` (`usuariosId`),
-  CONSTRAINT `fk_Citas_usuarios` FOREIGN KEY (`usuariosId`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  `usuarioId` int NOT NULL,
+  PRIMARY KEY (`id`,`usuarioId`),
+  KEY `fk_Citas_usuarios_idx` (`usuarioId`),
+  CONSTRAINT `fk_Citas_usuarios` FOREIGN KEY (`usuarioId`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,6 +41,7 @@ CREATE TABLE `citas` (
 
 LOCK TABLES `citas` WRITE;
 /*!40000 ALTER TABLE `citas` DISABLE KEYS */;
+INSERT INTO `citas` VALUES (8,'2024-10-15','15:09:00',3),(9,'2024-11-11','16:32:00',3),(10,'2024-11-18','11:13:00',3),(11,'2024-11-25','18:19:00',3);
 /*!40000 ALTER TABLE `citas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -58,9 +59,9 @@ CREATE TABLE `citasservicios` (
   PRIMARY KEY (`id`,`citaId`,`servicioId`),
   KEY `fk_citas_has_servicios_servicios1_idx` (`servicioId`),
   KEY `fk_citas_has_servicios_idx` (`citaId`),
-  CONSTRAINT `fk_cita_servicio_cita` FOREIGN KEY (`citaId`) REFERENCES `citas` (`id`),
-  CONSTRAINT `fk_cita_servicio_servicio` FOREIGN KEY (`servicioId`) REFERENCES `servicios` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  CONSTRAINT `fk_cita_servicio_cita` FOREIGN KEY (`citaId`) REFERENCES `citas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_cita_servicio_servicio` FOREIGN KEY (`servicioId`) REFERENCES `servicios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -69,6 +70,7 @@ CREATE TABLE `citasservicios` (
 
 LOCK TABLES `citasservicios` WRITE;
 /*!40000 ALTER TABLE `citasservicios` DISABLE KEYS */;
+INSERT INTO `citasservicios` VALUES (10,9,1),(16,10,1),(5,8,3),(11,9,3),(17,10,3),(6,8,5),(12,9,5),(18,10,5),(7,8,7),(13,9,7),(8,8,9),(14,9,9),(19,11,10),(9,8,11),(15,9,11),(20,11,11);
 /*!40000 ALTER TABLE `citasservicios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -84,7 +86,7 @@ CREATE TABLE `servicios` (
   `nombre` varchar(60) DEFAULT NULL,
   `precio` decimal(5,2) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -93,7 +95,7 @@ CREATE TABLE `servicios` (
 
 LOCK TABLES `servicios` WRITE;
 /*!40000 ALTER TABLE `servicios` DISABLE KEYS */;
-INSERT INTO `servicios` VALUES (1,'Corte de Cabello Mujer',90.00),(2,'Corte de Cabello Hombre',80.00),(3,'Corte de Cabello Niño',60.00),(4,'Peinado Mujer',80.00),(5,'Peinado Hombre',60.00),(6,'Peinado Niño',60.00),(7,'Corte de Barba',60.00),(8,'Tinte Mujer',300.00),(9,'Uñas',400.00),(10,'Lavado de Cabello',50.00),(11,'Tratamiento Capilar',150.00);
+INSERT INTO `servicios` VALUES (1,'Corte de Cabello Mujer',90.00),(2,'Corte de Cabello para Hombre',80.00),(3,'Corte de Cabello Niñito',70.00),(4,'Peinado Mujer',80.00),(5,'Peinado Hombre',60.00),(6,'Peinado Niño',60.00),(7,'Corte de Barba',60.00),(8,'Tinte Mujer',300.00),(9,'Uñas',400.00),(10,'Lavado de Cabello',50.00),(11,'Tratamiento Capilar',150.00),(14,' Tinte para caballero',130.00);
 /*!40000 ALTER TABLE `servicios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -124,7 +126,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'Carlos','Hernandez','correo@correo.com','$2y$10$OHKCCBNRD3ht1zgbI11Aiu/bKq7Z8WCH7svDtKCW5ZEX2zZ.xIcay','1234567890',0,1,''),(2,' Carlos','Hernandez','correo2@correo.com','$2y$10$FU3ygnCR8oQf/7GvbrzUt.0MZkoQCQKaQhmqT2K9wR8luTcsuREtW','1231231231',1,1,''),(3,' Carlos','Hernandez','correo3@correo.com','$2y$10$6AU85.aSIaEGSMQHfklTbOhscV1a/KRiolfE2Jz/BZpdOW.c7p5du','3453453453',0,1,''),(4,' carlos','hernandez','correo4@correo.com','$2y$10$eP1cNrkM3zMPw5M7ddkvHe4Y4Sah9exQo/YfqTR.Sxh6gyzFoEWP.','123123123',0,0,'67018fd0518f9 '),(5,' carlos','hernandez','correo5@correo.com','$2y$10$8zwEnKAGX8Dp6EF.Vs.MceJc4PspJf8b9YD1CCBi3F6KDKKVuzqKK','123123123',0,0,'670190661d796 '),(6,' Juan','Lopez','juan@correo.com','$2y$10$fDzGZIKHnds.l3fcRdamjetFjEKk3XpckqmyYnAoUbE2XShwUe51e','345345345',0,1,'');
+INSERT INTO `usuarios` VALUES (2,' Carlos','Administrador','correo2@correo.com','$2y$10$FU3ygnCR8oQf/7GvbrzUt.0MZkoQCQKaQhmqT2K9wR8luTcsuREtW','1231231231',1,1,''),(3,' Carlos','Usuario','correo3@correo.com','$2y$10$6AU85.aSIaEGSMQHfklTbOhscV1a/KRiolfE2Jz/BZpdOW.c7p5du','3453453453',0,1,'');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -145,4 +147,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-05 18:58:32
+-- Dump completed on 2024-11-20 19:21:03

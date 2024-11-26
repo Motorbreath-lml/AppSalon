@@ -112,7 +112,7 @@ function paginaSiguiente() {
 // Funcion asincrona
 async function consultarAPI() {
   try {
-    const url = 'http://localhost:3000/api/servicios';
+    const url = '/api/servicios';
     const resultados = await fetch(url);
     const servicios = await resultados.json();
     mostrarServicios(servicios);
@@ -204,7 +204,8 @@ function seleccionarHora() {
       mostrarAlerta('Hora No Válida', 'error', '.formulario');
     } else {
       cita.hora = e.target.value;
-      //console.log(cita);
+      console.log("desde funion seleccionaHora");
+      console.log(cita);
     }
   });
 }
@@ -245,6 +246,9 @@ function mostrarResumen() {
 
   if (Object.values(cita).includes('') || cita.servicios.length === 0) {
     mostrarAlerta('Faltan datos de Servicios, Fecha u Hora', 'error', '.contenido-resumen',false);
+    console.log("el tamanio de serrvicios:"+(cita.servicios.length === 0));
+    console.log("Loque hay en cita:"+cita);
+    console.log(cita);
     return;
   }
 
@@ -324,7 +328,7 @@ async function reservarCita(){
   datos.append('servicios', idServicio);
 
   // Petición hacia la api
-  const url ='http://localhost:3000/api/citas';
+  const url ='/api/citas';
   
   // Por si la peticion falla
   try {

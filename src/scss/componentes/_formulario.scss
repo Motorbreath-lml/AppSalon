@@ -1,9 +1,10 @@
 @use 'base/variables' as v;
 @use 'base/mixins' as m;
+@use "sass:color";
 
 .formulario{
-  margin-top: 5rem;
-  width: 100%;
+  width: 95%;
+  margin: 5rem auto;
 }
 
 .campo{
@@ -22,7 +23,8 @@
     border-radius: 1rem;
 
     &:disabled{
-      background-color: lighten(v.$negro, 30%);
+      //background-color: lighten(v.$negro, 30%);
+      background-color: color.scale(v.$negro, $lightness: 30%);
       color: v.$blanco;
       cursor: not-allowed;
     }

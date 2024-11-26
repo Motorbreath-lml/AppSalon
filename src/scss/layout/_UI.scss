@@ -5,31 +5,33 @@
   @include m.tablet{
     display: grid;
     grid-template-columns: repeat(2,1fr);
-    min-height: 100vh;
+    height: 100vh;
   }
 
   .imagen{
+    // height: 100vh;
     height: 30rem;
     background-image: url(../img/1.jpg);
     background-size: cover;
     background-position: center center;
     @include m.tablet{
-      height: auto;
+      //height: auto;
+      height: 100vh;
     }
   }
 
   .app{
-    width: 99%;
+    width: 100%;
     margin: 0 auto;
     padding: 3rem 0;
     @include m.tablet{
-      overflow: scroll;
+      overflow: auto;
     }
   }
 
   .barra{
-    margin: v.$separacion 0;
-
+    margin: calc(v.$separacion/1.5) 0;
+    text-align: center;
     @include m.tablet{
       display: flex;
       justify-content: space-between;
@@ -37,8 +39,13 @@
     }
 
     .boton{
-      @include m.boton(v.$negro, v.$blanco);
-      margin: 0;
+      @include m.boton(v.$negro, v.$blanco);      
+      &{
+        margin: 0;
+      }
+    }
+    span{
+      font-weight: bold;
     }
   }
 }

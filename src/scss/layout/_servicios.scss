@@ -2,6 +2,8 @@
 @use 'base/mixins' as m;
 
 .listado-servicios{
+  width: 95%;
+  margin: 0 auto;
   display: grid;
   gap: 2rem;
   @include m.tablet{
