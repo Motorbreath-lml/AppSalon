@@ -1,0 +1,9 @@
+# Activa la reescritura de URL
+RewriteEngine On
+
+# Asegúrate de que no se redirijan las solicitudes a archivos o directorios existentes
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Redirige todas las demás solicitudes a public/index.php
+RewriteRule ^ index.php [L]

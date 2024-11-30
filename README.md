@@ -8,6 +8,8 @@
 - El proyecto se inicia en la carpeta Public
 - El comando `php -S localhost:3000` incia el servidor
 
+El Proyecto se pretende subir a [infinityfree](https://www.infinityfree.com/) por lo tanto se hicieron modificaciones para usar un archivo `.htaccess` y se coloco un archivo `index.php`, con htaccess se redirige todas las peticiones al archivo index.php en el se llama al archivo index.php de la carpeta public, para que inicie el proyecto, Entonces este proyecto se pretende usar en un entorno XAMPP con virtual host para poder usar el archivo .htaccess
+
 ## Notas para mi
 Este proyecto lo empece el 21/09/2024, las dependencias del **package.json** estan actualizados hasta este momento, las dependencias se instalan con el comando `npm install`. Para que gulp funcione se ejecuta con el comando `npm run dev` Gulp ayuda a compilar JS y CSS, ademas de comprimir y convertir de formato las imagenes, las dependencias del package.json son solo para desarrollo, no deverian de ir en produccion, ya que no son necesarias.
 
