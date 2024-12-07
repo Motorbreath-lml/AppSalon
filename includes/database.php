@@ -6,6 +6,8 @@ $db_password = $_ENV['DB_PASSWORD'];
 $db_port = $_ENV['DB_PORT'];
 
 $db = mysqli_connect($db_host, $db_user, $db_password, $db_database, $db_port);
+// Forzar codificación UTF-8 al conectar con la base de datos
+$db->set_charset('utf8mb4');
 
 
 if (!$db) {

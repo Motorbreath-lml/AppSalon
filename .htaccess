@@ -1,9 +1,27 @@
+# htaccess original
+# Activa la reescritura de URL
+#RewriteEngine On
+
+# Asegúrate de que no se redirijan las solicitudes a archivos o directorios existentes
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} !-d
+
+# Redirige todas las demás solicitudes a public/index.php
+#RewriteRule ^ index.php [L]
+
+# htaccess echo por 
 # Activa la reescritura de URL
 RewriteEngine On
 
-# Asegúrate de que no se redirijan las solicitudes a archivos o directorios existentes
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+# Excepciones: permite el acceso directo a favicons y otros recursos estáticos
+RewriteCond %{REQUEST_URI} ^/favicon.ico [OR]
+RewriteCond %{REQUEST_URI} ^/build/img/favicon_io/ [OR]
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
 
-# Redirige todas las demás solicitudes a public/index.php
+# Redirige todas las demás solicitudes a index.php
+RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.php [L]
+
+php_value display_errors On
+php_value date.timezone America/Mexico_City

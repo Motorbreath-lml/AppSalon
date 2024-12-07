@@ -9,18 +9,18 @@
     <link rel="stylesheet" href="/public/build/css/app.css">
 
     <!-- Favicon para navegadores comunes -->
-    <link rel="shortcut icon" href="/build/img/favicon_io/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/public/build/img/favicon_io/favicon.ico" type="image/x-icon">
 
-    <link rel="icon" href="/build/img/favicon_io/favicon-16x16.png" type="image/png">
+    <link rel="icon" href="/public/build/img/favicon_io/favicon-16x16.png" type="image/png">
 
-    <link rel="icon" href="/build/img/favicon_io/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="/public/build/img/favicon_io/favicon-32x32.png" type="image/png">
 
     <!-- Favicon para dispositivos Apple (iPhone, iPad) -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/build/img/favicon_io/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/public/build/img/favicon_io/apple-touch-icon.png">
 
     <!-- Favicon para Android Chrome -->
-    <link rel="icon" sizes="192x192" href="/build/img/favicon_io/android-chrome-192x192.png">
-    <link rel="icon" sizes="512x512" href="/build/img/favicon_io/android-chrome-512x512.png">
+    <link rel="icon" sizes="192x192" href="/public/build/img/favicon_io/android-chrome-192x192.png">
+    <link rel="icon" sizes="512x512" href="/public/build/img/favicon_io/android-chrome-512x512.png">
 </head>
 
 <body>

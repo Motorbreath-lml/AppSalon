@@ -4,14 +4,30 @@ namespace Controllers;
 
 use Model\Cita;
 use Model\CitaServicio;
-use Model\servicio;
+use Model\Servicio;
 
 class APIController{
   public static function index(){
     // Consulta de todos los servicios
-    $servicios = servicio::all();
-    // Mandar como un JSON todo el arreglo de los servicios
-    echo json_encode($servicios);
+    $servicios = Servicio::all();
+
+    // Asegúrate de limpiar el buffer de salida antes de enviar el JSON
+    if (ob_get_length()) {
+      ob_clean();
+    }
+
+     // Decir que mandamos un JSON
+     header('Content-Type: application/json');
+
+    // Convertir el arreglo a un JSON     
+    $json_data=json_encode($servicios);
+
+    // Revisar si el JSon se puedo decodificar
+    if ($json_data === false) { 
+        echo 'Error al codificar JSON: ' . json_last_error_msg(); 
+    } else { 
+        echo $json_data; 
+    }
   }
 
   public static function guardar(){

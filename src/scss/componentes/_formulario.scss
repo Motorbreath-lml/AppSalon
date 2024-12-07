@@ -17,7 +17,8 @@
   }
 
   input{
-    flex: 1; //Extiende el input en el contendor
+    flex: 1 1 auto; //Extiende el input en el contendor
+    max-width: calc(100% - 10rem); // El ancho es maximo que se puede quitando, el ancho del label
     border: none;
     padding: calc(v.$separacion/4);
     border-radius: 1rem;
